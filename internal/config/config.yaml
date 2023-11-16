@@ -1,0 +1,13 @@
+---
+server:
+  port: 5000
+  host_port: localhost:5000
+
+postgres:
+  host: host.docker.internal #localhost
+  port: 5436
+  user: admin
+  pass: admin
+  name: times
+  ssl_mode: disable
+...

@@ -1,0 +1,43 @@
+version: '3.5'
+
+services:
+  postgres_db:
+    container_name: postgres_db
+    restart: always
+    ports:
+      - "5436:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=times
+      - POSTGRES_SSLMODE=disable
+    image: postgres:15.0-alpine3.16
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+
+  app:
+    container_name: app
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    restart: always
+    command: ./app
+    ports:
+      - "5000:5000"
+    depends_on:
+      - postgres_db
+      - nginx
+    environment:
+      - CONFIG_PATH=/go/internal/config/config.yaml
+
+  nginx:
+    container_name: nginx_microservice
+    ports:
+      - 8080:8080
+      - 443:443
+    volumes:
+      - ./nginx/nginx-selfsigned.crt:/etc/nginx/certs/nginx-selfsigned.crt
+      - ./nginx/nginx-selfsigned.key:/etc/nginx/certs/nginx-selfsigned.key
+    build:
+      context: ./nginx
+      dockerfile: Dockerfile
