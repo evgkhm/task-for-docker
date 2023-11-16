@@ -1,0 +1,57 @@
+version: '3.7'
+
+services:
+  app:
+    image: evgkhm/swarm-demo-app:1.0.1
+    ports:
+      - "5000:5000"
+    deploy:
+      replicas: 1
+      resources:
+        limits:
+          cpus: "0.2"
+          memory: 50M
+      restart_policy:
+        condition: on-failure
+    depends_on:
+      - postgres_db
+      - nginx
+    networks:
+      - webnet
+    environment:
+      - CONFIG_PATH=/go/internal/config/config.yaml
+
+  postgres_db:
+    ports:
+      - "5436:5432"
+    environment:
+      - POSTGRES_PASSWORD=admin
+      - POSTGRES_USER=admin
+      - POSTGRES_DB=times
+      - POSTGRES_SSLMODE=disable
+    image: postgres:15.0-alpine3.16
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql
+    networks:
+      - webnet
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+  nginx:
+    image: evgkhm/swarm-demo-nginx:1.0.0
+    ports:
+      - 8080:8080
+      - 443:443
+    networks:
+      - webnet
+    deploy:
+      replicas: 1
+      restart_policy:
+        condition: on-failure
+
+networks:
+  webnet:
+    driver: overlay
+    attachable: true

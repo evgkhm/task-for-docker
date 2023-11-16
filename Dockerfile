@@ -8,6 +8,8 @@ ENV GOPATH=/
 ##EXPOSE 8888
 #EXPOSE 8080
 
+#EXPOSE 5000
+
 COPY ./ ./
 
 RUN go mod download

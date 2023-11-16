@@ -33,12 +33,10 @@ func (h *Handler) createTime(writer http.ResponseWriter, request *http.Request) 
 		h.Respond(writer, nil, http.StatusInternalServerError)
 		return
 	}
-	h.Respond(writer, nil, http.StatusCreated)
+	h.Respond(writer, []byte("OK"), http.StatusCreated)
 }
 
 func (h *Handler) getTime(writer http.ResponseWriter, request *http.Request) {
-	//data := []byte("Ok")
-	//t := &entity.Data{}
 	t, err := h.useCases.GetTime(request.Context())
 	if err != nil {
 		h.Respond(writer, nil, http.StatusInternalServerError)

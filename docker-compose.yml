@@ -17,6 +17,7 @@ services:
 
   app:
     container_name: app
+    #image: app
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -32,12 +33,10 @@ services:
 
   nginx:
     container_name: nginx_microservice
+    #image: nginx
     ports:
       - 8080:8080
       - 443:443
-    volumes:
-      - ./nginx/nginx-selfsigned.crt:/etc/nginx/certs/nginx-selfsigned.crt
-      - ./nginx/nginx-selfsigned.key:/etc/nginx/certs/nginx-selfsigned.key
     build:
       context: ./nginx
       dockerfile: Dockerfile
