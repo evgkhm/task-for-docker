@@ -11,8 +11,8 @@
 2. `cd task-for-docker`
 3. `make run-swarm`
 
-# Getting Started with a single host
-1. `make run`
+## For getting Started with a single host
+`make run`
 
 # API
 | Endpoint       | API method |                         Description |
@@ -23,6 +23,6 @@
 
 # Example
 1. Создание временной метки (post запрос на nginx)
-curl -X POST http://localhost:8080/api/time
+`curl -X POST http://localhost:8080/api/time`
 2. Получение (get запрос на nginx)
-curl http://localhost:8080/api/last_time
+`curl http://localhost:8080/api/last_time`
